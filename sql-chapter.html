@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Atlas | Chapter 3</title>
+<style>
+:root{--ink:#16252c;--muted:#66767a;--paper:#f7f4ed;--panel:#fffdf8;--line:#d9ddd6;--teal:#0e6f68;--teal-dark:#084944;--coral:#e87355;--yellow:#f5c85b;--shadow:0 18px 50px rgba(22,37,44,.10)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 Georgia,serif}button,input{font:inherit}button{cursor:pointer} .shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;padding:28px 22px;background:var(--teal-dark);color:#eaf4ee;overflow:auto}.brand{font:700 22px Georgia;margin-bottom:5px}.brand span{color:var(--yellow)}.eyebrow{font:11px Arial,sans-serif;text-transform:uppercase;letter-spacing:1.5px;color:#99c8bd}.side-copy{color:#b6d6cb;font-size:13px;margin:8px 0 28px}.nav{display:grid;gap:5px}.nav button{border:0;text-align:left;background:transparent;color:#b9d6ce;padding:9px 11px;border-radius:7px;font:13px Arial,sans-serif;transition:.2s}.nav button:hover,.nav button.active{background:#165f59;color:white}.progress-wrap{margin-top:30px;border-top:1px solid #39746d;padding-top:18px;font:12px Arial,sans-serif}.progress-bar{height:7px;background:#2a625d;border-radius:9px;margin:8px 0}.progress-bar i{display:block;height:100%;width:0;background:var(--yellow);border-radius:9px;transition:.4s}
+main{max-width:1250px;width:100%;margin:auto;padding:36px clamp(22px,5vw,72px) 80px}.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:35px;align-items:end;padding:20px 0 44px;border-bottom:1px solid var(--line)}h1{font-size:clamp(42px,6vw,82px);line-height:.98;letter-spacing:-2px;margin:12px 0 20px;color:var(--teal-dark)}h2{font-size:35px;line-height:1.05;margin:0 0 16px;color:var(--teal-dark)}h3{font-size:21px;margin:0 0 8px}.lede{font-size:19px;color:var(--muted);max-width:650px}.hero-art{min-height:230px;background:var(--yellow);padding:25px;position:relative;overflow:hidden;border-radius:4px}.hero-art:before,.hero-art:after{content:"";position:absolute;border:2px solid var(--teal-dark);border-radius:50%;width:180px;height:180px;right:-45px;top:-58px}.hero-art:after{width:95px;height:95px;right:55px;top:90px}.sql-stamp{position:absolute;left:25px;bottom:22px;font:bold 42px Arial,sans-serif;letter-spacing:-3px;color:var(--teal-dark)}
+.toolbar{display:flex;gap:10px;align-items:center;margin:28px 0;position:sticky;top:10px;z-index:3}.search{flex:1;position:relative}.search input{width:100%;padding:13px 16px 13px 42px;border:1px solid var(--line);background:var(--panel);border-radius:3px;color:var(--ink);outline-color:var(--coral)}.search:before{content:"/";position:absolute;left:17px;top:9px;font:700 18px Arial;color:var(--coral)}.toolbar button,.filter{border:1px solid var(--line);background:var(--panel);padding:12px 15px;border-radius:3px;color:var(--teal-dark);font:700 12px Arial;text-transform:uppercase;letter-spacing:.5px}.toolbar button:hover{background:var(--coral);color:#fff;border-color:var(--coral)}
+section{padding:44px 0;border-bottom:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:start;margin-bottom:24px}.kicker{font:700 11px Arial;text-transform:uppercase;letter-spacing:1.4px;color:var(--coral);margin-bottom:8px}.section-no{font:bold 48px Arial;color:#d9ddd6;line-height:1}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);padding:20px;box-shadow:0 7px 20px rgba(22,37,44,.04)}.card strong{color:var(--teal)}.card p{margin:7px 0 0;color:var(--muted)}.wide{grid-column:span 2}.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.tag{font:11px Arial;color:var(--teal);background:#e2f0e9;padding:4px 7px;border-radius:2px}.code-wrap{background:#122d31;color:#e6f1e8;margin:18px 0;position:relative;border-left:4px solid var(--coral)}pre{margin:0;padding:19px;overflow:auto;font:13px/1.7 Consolas,monospace}.copy{position:absolute;right:10px;top:9px;background:#315451;color:#dcebe2;border:0;padding:5px 8px;font:11px Arial}.copy:hover{background:var(--coral)}.callout{border-left:4px solid var(--yellow);background:#fff7d8;padding:16px 18px;margin:18px 0}.definition{display:flex;gap:16px;align-items:start}.definition b{font:700 24px Arial;color:var(--coral);min-width:45px}
+.accordion{border-top:1px solid var(--line)}.acc{border-bottom:1px solid var(--line)}.acc button{width:100%;border:0;background:transparent;text-align:left;padding:16px 4px;color:var(--ink);font-weight:bold;display:flex;justify-content:space-between}.acc button span{color:var(--coral);font:20px Arial}.acc div{display:none;padding:0 4px 17px;color:var(--muted)}.acc.open div{display:block}.acc.open button span{transform:rotate(45deg)}
+.lab{display:grid;grid-template-columns:1fr 1fr;gap:18px}.editor{width:100%;min-height:180px;background:#122d31;color:#e6f1e8;border:0;padding:18px;font:13px/1.6 Consolas,monospace;resize:vertical}.run{margin-top:10px;background:var(--coral);color:white;border:0;padding:10px 16px;font:bold 12px Arial;text-transform:uppercase}.result{background:#edf4ed;border:1px solid #cbdacf;padding:14px;min-height:180px;font:13px Consolas,monospace;white-space:pre-wrap}.table{width:100%;border-collapse:collapse;background:var(--panel);font-size:14px}.table th,.table td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line)}.table th{font:bold 11px Arial;text-transform:uppercase;color:var(--teal)}
+.quiz{display:grid;gap:18px}.question{background:var(--panel);border:1px solid var(--line);padding:19px}.question p{margin-top:0;font-weight:bold}.options{display:grid;gap:8px}.options label{padding:9px 11px;border:1px solid var(--line);cursor:pointer}.options label:hover{border-color:var(--coral);background:#fff7ed}.feedback{font:12px Arial;margin-top:9px}.correct{color:var(--teal)}.wrong{color:#b24632}.hidden{display:none!important}.empty{padding:40px;text-align:center;color:var(--muted)}footer{padding-top:38px;color:var(--muted);font-size:13px}
+@media(max-width:850px){.shell{display:block}.sidebar{position:relative;height:auto;padding:18px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.progress-wrap{display:none}.hero{grid-template-columns:1fr}.hero-art{min-height:150px}.toolbar{top:0;flex-wrap:wrap}.search{flex-basis:100%}.grid,.lab{grid-template-columns:1fr}.wide{grid-column:auto}h1{letter-spacing:-1px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="eyebrow">Chapter 03</div><div class="brand">SQL <span>Atlas</span></div>
+  <p class="side-copy">A field guide to querying, shaping, and changing relational data.</p>
+  <nav class="nav" aria-label="Chapter sections">
+    <button class="active" data-target="overview">Overview</button><button data-target="ddl">Data definition</button><button data-target="queries">Query structure</button><button data-target="operations">Operations</button><button data-target="aggregates">Aggregates</button><button data-target="subqueries">Subqueries</button><button data-target="modification">Modification</button><button data-target="practice">Practice</button>
+  </nav>
+  <div class="progress-wrap">READING PROGRESS <span id="progressText">0%</span><div class="progress-bar"><i id="progressBar"></i></div></div>
+</aside>
+<main>
+<header class="hero" id="overview">
+  <div><div class="kicker">Introduction to SQL</div><h1>Ask the data<br><em>better questions.</em></h1><p class="lede">An interactive study guide for the SQL query language: from table schemas and predicates to grouped results, nested logic, and safe updates.</p></div>
+  <div class="hero-art"><div class="eyebrow">Relational thinking</div><div class="sql-stamp">SELECT<br>INSIGHT</div></div>
+</header>
+<div class="toolbar"><div class="search"><input id="search" type="search" placeholder="Search concepts, clauses, examples..." aria-label="Search chapter"></div><button id="expand">Expand all</button><button id="reset">Reset progress</button></div>
+<div id="content">
+<section data-section="ddl" id="ddl"><div class="section-head"><div><div class="kicker">01 / Build the world</div><h2>Data definition</h2><p class="lede">DDL describes what relations are made of, how values behave, and which rules protect them.</p></div><div class="section-no">01</div></div>
+<div class="grid"><div class="card"><h3>SQL has several parts</h3><p><strong>DML</strong> queries and changes tuples. <strong>DDL</strong> specifies schemas and integrity constraints. SQL also includes view definition, transaction control, embedded and dynamic SQL, and authorization.</p></div><div class="card"><h3>Domain types</h3><p><strong>char(n)</strong> is fixed length; <strong>varchar(n)</strong> is variable length. Numeric families include int, smallint, numeric(p,d), real, double precision, and float(n).</p></div><div class="card"><h3>Integrity constraints</h3><p>Use <strong>primary key</strong>, <strong>foreign key</strong>, and <strong>not null</strong> to keep invalid updates out of the database.</p></div></div>
+<div class="code-wrap"><button class="copy">Copy</button><pre>create table instructor (
+  ID        char(5),
+  name      varchar(20) not null,
+  dept_name varchar(20),
+  salary    numeric(8,2),
+  primary key (ID),
+  foreign key (dept_name) references department
+);</pre></div>
+<div class="callout"><strong>Schema intuition:</strong> attributes define the columns, domains define valid values, and constraints define relationships that must remain true.</div></section>
+
+<section data-section="queries" id="queries"><div class="section-head"><div><div class="kicker">02 / Shape a result</div><h2>Query structure</h2><p class="lede">A typical query selects attributes from relations and keeps only tuples that satisfy a predicate.</p></div><div class="section-no">02</div></div>
+<div class="code-wrap"><button class="copy">Copy</button><pre>select A1, A2, ..., An
+from r1, r2, ..., rm
+where P;</pre></div>
+<div class="grid"><div class="card"><h3><strong>select</strong></h3><p>Chooses result attributes. SQL permits duplicates; use <strong>distinct</strong> to remove them. An asterisk means all attributes, and expressions can be renamed with <strong>as</strong>.</p><div class="code-wrap"><pre>select distinct dept_name
+from instructor;</pre></div></div><div class="card"><h3><strong>from</strong></h3><p>Lists the relations involved. Multiple relations form a Cartesian product, which becomes useful when paired with matching conditions in <strong>where</strong>.</p><div class="code-wrap"><pre>select name, course_id
+from instructor, teaches
+where instructor.ID = teaches.ID;</pre></div></div><div class="card"><h3><strong>where</strong></h3><p>Filters rows with and, or, not, and comparisons such as &lt;, &lt;=, &gt;, &gt;=, =, and &lt;&gt;.</p><div class="code-wrap"><pre>where dept_name = 'Comp. Sci.'
+  and salary &gt; 70000;</pre></div></div></div>
+<div class="accordion"><div class="acc"><button>Rename relations with <strong>as</strong><span>+</span></button><div>Aliases make self-joins readable. For example, compare instructor T with instructor S to find people earning more than someone in Computer Science. The keyword as is optional.</div></div><div class="acc"><button>Self joins and correlation<span>+</span></button><div>A relation can appear more than once with different aliases. This lets you follow an employee-supervisor relationship one step at a time.</div></div></div></section>
+
+<section data-section="operations" id="operations"><div class="section-head"><div><div class="kicker">03 / Refine the question</div><h2>Additional operations</h2><p class="lede">Patterns, ordering, ranges, and set operators add precision to everyday queries.</p></div><div class="section-no">03</div></div>
+<div class="grid"><div class="card"><h3>Pattern matching</h3><p><strong>%</strong> matches any substring and <strong>_</strong> matches one character. Patterns are case sensitive.</p><div class="code-wrap"><pre>select name
+from instructor
+where name like '%dar%';</pre></div></div><div class="card"><h3>Ordering</h3><p>Sort with <strong>order by</strong>. Ascending is the default; use desc for reverse order. Multiple attributes can be listed.</p><div class="code-wrap"><pre>order by dept_name, name desc;</pre></div></div><div class="card"><h3>Ranges and tuples</h3><p><strong>between</strong> includes both endpoints. SQL can also compare tuples when their shape matches.</p><div class="code-wrap"><pre>where salary between 90000 and 100000;</pre></div></div></div>
+<div class="card"><h3>Set operations</h3><p>Combine compatible query results with <strong>union</strong>, <strong>intersect</strong>, and <strong>except</strong>. They remove duplicates automatically; append <strong>all</strong> to retain them.</p><div class="code-wrap"><pre>(select course_id from section where semester = 'Fall' and year = 2017)
+union
+(select course_id from section where semester = 'Spring' and year = 2018);</pre></div></div></section>
+
+<section data-section="aggregates" id="aggregates"><div class="section-head"><div><div class="kicker">04 / See the shape</div><h2>Nulls & aggregates</h2><p class="lede">Missing values have three-valued logic. Aggregate functions turn many rows into useful summaries.</p></div><div class="section-no">04</div></div>
+<div class="grid"><div class="card"><h3>Null is unknown</h3><p>Arithmetic involving null returns null. Comparisons with null evaluate to unknown, and where treats unknown as false. Test explicitly with <strong>is null</strong> or <strong>is not null</strong>.</p></div><div class="card"><h3>Five workhorses</h3><p><strong>avg</strong>, <strong>min</strong>, <strong>max</strong>, <strong>sum</strong>, and <strong>count</strong> operate over column values. count(*) counts tuples; count(column) counts values.</p></div><div class="card"><h3>where vs having</h3><p><strong>where</strong> filters before groups form. <strong>having</strong> filters after aggregation.</p></div></div>
+<div class="code-wrap"><button class="copy">Copy</button><pre>select dept_name, avg(salary) as avg_salary
+from instructor
+group by dept_name
+having avg(salary) &gt; 42000;</pre></div>
+<div class="callout"><strong>Grouping rule:</strong> every attribute in select that is outside an aggregate must appear in the group by list.</div></section>
+
+<section data-section="subqueries" id="subqueries"><div class="section-head"><div><div class="kicker">05 / Ask inside the ask</div><h2>Nested subqueries</h2><p class="lede">A subquery is a select-from-where expression nested inside another query. It can live in from, where, or select.</p></div><div class="section-no">05</div></div>
+<div class="grid"><div class="card"><h3>Membership</h3><p><strong>in</strong> and <strong>not in</strong> compare a value to a subquery result.</p><div class="code-wrap"><pre>where course_id in (
+  select course_id from section
+  where semester = 'Spring'
+);</pre></div></div><div class="card"><h3>Some & all</h3><p><strong>some</strong> means at least one matching row. <strong>all</strong> means every row must match.</p><div class="code-wrap"><pre>where salary &gt; all (
+  select salary from instructor
+  where dept_name = 'Biology'
+);</pre></div></div><div class="card"><h3>Exists</h3><p><strong>exists</strong> is true when a subquery is nonempty; <strong>not exists</strong> is true when it is empty. A correlated subquery refers to an outer alias.</p><div class="code-wrap"><pre>where exists (
+  select * from section T
+  where S.course_id = T.course_id
+);</pre></div></div></div>
+<div class="accordion"><div class="acc"><button>from subqueries and with<span>+</span></button><div>A subquery in from acts like a temporary relation. The with clause gives a temporary relation a name, which is especially useful for multi-stage calculations.</div></div><div class="acc"><button>Scalar subqueries<span>+</span></button><div>A scalar subquery is used where one value is expected, such as counting instructors per department. It is a runtime error if it returns more than one tuple.</div></div><div class="acc"><button>unique<span>+</span></button><div>The unique construct evaluates true when a subquery contains no duplicate tuples.</div></div></div></section>
+
+<section data-section="modification" id="modification"><div class="section-head"><div><div class="kicker">06 / Change carefully</div><h2>Modification</h2><p class="lede">Insertion, deletion, and updates change stored tuples. Conditions and evaluation order matter.</p></div><div class="section-no">06</div></div>
+<div class="grid"><div class="card"><h3>insert</h3><div class="code-wrap"><pre>insert into course
+values ('CS-437', 'Database Systems',
+        'Comp. Sci.', 4);</pre></div><p>Insert can also take the result of a select. That select is fully evaluated before rows are inserted.</p></div><div class="card"><h3>delete</h3><div class="code-wrap"><pre>delete from instructor
+where salary &lt; (
+  select avg(salary) from instructor
+);</pre></div><p>SQL first identifies qualifying tuples using the original average, then deletes them.</p></div><div class="card"><h3>update</h3><div class="code-wrap"><pre>update instructor
+set salary = case
+  when salary &lt;= 100000 then salary * 1.05
+  else salary * 1.03
+end;</pre></div><p>Use case for conditional updates in one statement.</p></div></div>
+<div class="callout"><strong>Remember:</strong> dropping a table removes the relation. Alter can add an attribute, assigning null to existing tuples; dropping attributes is not supported by many databases.</div></section>
+
+<section data-section="practice" id="practice"><div class="section-head"><div><div class="kicker">07 / Try it</div><h2>Practice lab</h2><p class="lede">Edit the query, run it, and inspect a small simulated result. This is a learning sandbox, not a live database.</p></div><div class="section-no">07</div></div>
+<div class="lab"><div><textarea class="editor" id="editor">select name, salary
+from instructor
+where dept_name = 'Comp. Sci.'
+order by salary desc;</textarea><button class="run" id="run">Run query</button></div><div class="result" id="result">Result will appear here.</div></div>
+<h3 style="margin-top:42px">Quick check</h3><div class="quiz" id="quiz"><div class="question" data-answer="b"><p>Which clause filters groups after aggregation?</p><div class="options"><label><input type="radio" name="q1" value="a"> where</label><label><input type="radio" name="q1" value="b"> having</label><label><input type="radio" name="q1" value="c"> order by</label></div><div class="feedback"></div></div><div class="question" data-answer="c"><p>What does <code>is null</code> test?</p><div class="options"><label><input type="radio" name="q2" value="a"> Whether a value is zero</label><label><input type="radio" name="q2" value="b"> Whether a row is duplicated</label><label><input type="radio" name="q2" value="c"> Whether a value is unknown or absent</label></div><div class="feedback"></div></div><div class="question" data-answer="a"><p>Which operator keeps duplicates in a union?</p><div class="options"><label><input type="radio" name="q3" value="a"> union all</label><label><input type="radio" name="q3" value="b"> distinct union</label><label><input type="radio" name="q3" value="c"> union many</label></div><div class="feedback"></div></div></div></section>
+</div><footer>Built from Chapter 3: Introduction to SQL. Use the search field to jump through the atlas, or press <strong>/</strong> to focus it.</footer>
+</main></div>
+<script>
+const sections=[...document.querySelectorAll('section[data-section]')], nav=[...document.querySelectorAll('.nav button')], search=document.querySelector('#search');
+nav.forEach(button=>button.addEventListener('click',()=>document.getElementById(button.dataset.target).scrollIntoView({behavior:'smooth',block:'start'})));
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){nav.forEach(b=>b.classList.toggle('active',b.dataset.target===entry.target.dataset.section)); markProgress(entry.target.id)}}),{rootMargin:'-25% 0px -65%'});sections.forEach(s=>observer.observe(s));
+function markProgress(id){const seen=JSON.parse(localStorage.sqlSeen||'[]');if(!seen.includes(id)){seen.push(id);localStorage.sqlSeen=JSON.stringify(seen)}const percent=Math.round(seen.length/sections.length*100);document.querySelector('#progressBar').style.width=percent+'%';document.querySelector('#progressText').textContent=percent+'%'}
+function loadProgress(){const seen=JSON.parse(localStorage.sqlSeen||'[]');const percent=Math.round(seen.length/sections.length*100);document.querySelector('#progressBar').style.width=percent+'%';document.querySelector('#progressText').textContent=percent+'%'}loadProgress();
+document.querySelector('#reset').onclick=()=>{localStorage.removeItem('sqlSeen');loadProgress()};
+let expanded=false;document.querySelector('#expand').onclick=e=>{expanded=!expanded;document.querySelectorAll('.acc').forEach(a=>a.classList.toggle('open',expanded));e.target.textContent=expanded?'Collapse all':'Expand all'};
+document.querySelectorAll('.acc button').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.parentElement.querySelector('pre').innerText);const old=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=old,900)});
+search.addEventListener('input',()=>{const term=search.value.trim().toLowerCase();sections.forEach(section=>{const match=!term||section.innerText.toLowerCase().includes(term);section.classList.toggle('hidden',!match)});if(term){const first=sections.find(s=>!s.classList.contains('hidden'));if(first)first.scrollIntoView({behavior:'smooth',block:'start'})}});document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==search){e.preventDefault();search.focus()}});
+document.querySelector('#run').onclick=()=>{const text=document.querySelector('#editor').value.toLowerCase();let output='Query accepted.\n\n';if(text.includes('avg'))output+='dept_name     avg_salary\nComp. Sci.     77333.33\nBiology        72000.00\nFinance        65000.00';else if(text.includes('count'))output+='count\n-----\n5';else output+='name          salary\nKim           95000\nEinstein      80000\nSrinivasan    65000\n\n3 rows';document.querySelector('#result').textContent=output};
+document.querySelectorAll('.question input').forEach(input=>input.addEventListener('change',e=>{const q=e.target.closest('.question'), feedback=q.querySelector('.feedback');const good=e.target.value===q.dataset.answer;feedback.textContent=good?'Correct.':'Not quite. Review the nearby concept and try again.';feedback.className='feedback '+(good?'correct':'wrong')}));
+</script>
+</body>
+</html>
